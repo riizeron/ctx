@@ -7,6 +7,8 @@ set -euo pipefail
 CONFIG_BASE_DIR="$HOME/.config/ctx"
 CURRENT_CONTEXT_FILE="$HOME/.config/ctx/.current"
 
+mkdir -p $CONFIG_BASE_DIR
+
 # Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
