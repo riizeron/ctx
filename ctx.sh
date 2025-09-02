@@ -159,6 +159,9 @@ case "$1" in
     show)
         cmd_show "${2-}"
         ;;
+    help|-h|--help)
+        usage
+        ;;
     *)
         print_color $RED "Unknown command '$1'."
         usage

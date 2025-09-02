@@ -199,21 +199,7 @@ verify_installation() {
 
 # Function to show post-installation instructions
 show_instructions() {
-    print_color $CYAN "Installation completed successfully!"
-    echo
-    print_color $YELLOW "To start using ctx:"
-    echo "1. Restart your terminal or run: source ~/.${SHELL##*/}rc"
-    echo "2. Try: ctx list"
-    echo "3. Create your first configuration category in ~/.config/"
-    echo
-    print_color $BLUE "Example usage:"
-    echo "  ctx list              # List all categories"
-    echo "  ctx list mycategory   # List configs in category"
-    echo "  ctx use mycategory    # Interactive selection"
-    echo "  ctx show             # Show all current contexts"
-    echo
-    print_color $CYAN "Configuration structure:"
-    echo "  ~/.config/category/config_name/activate"
+   ctx help 
 }
 
 # Main installation function
