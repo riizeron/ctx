@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # Configuration switcher script with context tracking
 
 set -euo pipefail
@@ -19,7 +17,7 @@ NC='\033[0m' # No Color
 
 print_color() {
     local color=$1; shift
-    echo -e "${color}$*${NC}"
+    printf "%b%s%b\n" "$color" "$*" "$NC"
 }
 
 usage() {
@@ -84,6 +82,9 @@ activate_configuration() {
         exit 1
     fi
     print_color $GREEN "Activating $category/$cfg..."
+    
+    export CTX_DIR="$(dirname "$file")"
+
     source "$file"
     # Record current context
     grep -v "^$category=" "$CURRENT_CONTEXT_FILE" 2>/dev/null > "${CURRENT_CONTEXT_FILE}.tmp" || true
@@ -113,15 +114,20 @@ cmd_show() {
 cmd_use_interactive() {
     local category=$1
     local configs=()
+    local tmpfile
+    tmpfile=$(mktemp)
+        
+    get_configurations "$category" > "$tmpfile"
     while IFS= read -r cfg; do
         configs+=("$cfg")
-    done < <(get_configurations "$category")
-
+    done < "$tmpfile"
+    rm -f "$tmpfile"
+        
     if (( ${#configs[@]} == 0 )); then
         print_color $YELLOW "No configurations found in '$category'."
         exit 1
-    fi
-
+    fi  
+    
     print_color $CYAN "Select configuration for '$category':"
     PS3='Enter number> '
     select choice in "${configs[@]}"; do
@@ -130,7 +136,7 @@ cmd_use_interactive() {
             break
         else
             print_color $RED "Invalid selection."
-        fi
+        fi  
     done
 }
 
